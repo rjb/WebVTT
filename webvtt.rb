@@ -21,18 +21,18 @@ class WebVTT
 
   attr_reader :cues, :file
 
+  def self.read(file)
+    new(file)
+  end
+
   def initialize(file)
     @file = file
     @cues = []
     parse
   end
 
-  def self.read(file)
-    new(file)
-  end
-
   def to_s
-    cue.to_s + "\n" + phrase.to_s
+    cues.map(&:to_s).join
   end
 
   private
