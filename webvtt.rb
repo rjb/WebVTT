@@ -10,12 +10,14 @@ class WebVTT
       @text = text
     end
 
-    def timestamp
-      start + " --> " + stop
-    end
-
     def to_s
       timestamp + "\n" + text
+    end
+
+    private
+
+    def timestamp
+      start + " --> " + stop
     end
   end
 
