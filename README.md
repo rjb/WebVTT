@@ -5,7 +5,7 @@ Parse WebVTT files.
 ### Sample usage
 
 ```ruby
-speech = <<EOS
+speech = <<~EOS
   WEBVTT
   
   00:00.000 --> 00:04.000
