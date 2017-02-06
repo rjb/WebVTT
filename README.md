@@ -5,7 +5,7 @@ Parse WebVTT files.
 ### Sample usage
 
 ```ruby
-speech = <<~EOS
+speech = <<EOS
   WEBVTT
   
   00:00.000 --> 00:04.000
@@ -29,7 +29,10 @@ speech = <<~EOS
 EOS
 
 webvtt = WebVTT.read(speech)
+
 webvtt.cues.each do |cue|
-  puts cue.to_s
+  puts 'Start: ' + cue.start
+  puts 'End: ' + cue.stop
+  puts 'Text ' + cue.text
 end
 ```
