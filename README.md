@@ -5,23 +5,31 @@ Parse WebVTT files.
 ### Sample usage
 
 ```ruby
-file =
-  "WEBVTT\n" \
-  "00:01.000 --> 00:04.000" \
-  "\nNever drink liquid nitrogen.\nIt is not safe." \
-  "\n\n" \
-  "00:05.000 --> 00:10.000" \
-  "\nBut it is safe to drink water." \
-  "\n\n" \
-  "00:11.000 --> 00:15.000" \
-  "\nI love Coke ZERO!" \
-  "\n\n" \
-  "00:16.000 --> 00:25.000" \
-  "\nWell. What should we drink then?"
+speech = <<~EOS
+  WEBVTT
+  
+  00:00.000 --> 00:04.000
+  Thank you. Thank you. Thank you.
+  This is fantastic.
 
-webvtt = WebVTT.read(file)
+  00:05.000 --> 009.000
+  I never made it to college.
+  I didn't have enough money 
+
+  00:09.000 --> 00:12.000
+  and I decided I was going to be
+  a writer anyway.
+
+  00:13.000 --> 00:16.000
+  And the reason I was going to go
+  to college was all those girls.
+
+  00:17.000 --> 00:19.000
+  So it's a good thing I didn't go.
+EOS
+
+webvtt = WebVTT.read(speech)
 webvtt.cues.each do |cue|
   puts cue.to_s
 end
-
 ```
