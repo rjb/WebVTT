@@ -1,72 +1,67 @@
 require 'strscan'
 
 class WebVTT
-  class Cue
-    attr_reader :start, :stop, :text
+  attr_accessor :cues
 
-    def initialize(start, stop, text)
-      @start = start
-      @stop = stop
-      @text = text
-    end
-
-    def to_s
-      timestamp + "\n" + text
-    end
-
-    private
-
-    def timestamp
-      start + " --> " + stop
-    end
-  end
-
-  attr_reader :cues, :file
-
-  def self.read(file)
-    new(file)
-  end
-
-  def initialize(file)
-    @file = file
+  def initialize
     @cues = []
-    parse
   end
+end
 
-  def to_s
-    cues.map(&:to_s).join
+class Cue
+  attr_reader :start, :stop, :text
+
+  def initialize(start, stop, text)
+    @start = start
+    @stop = stop
+    @text = text
   end
+end
 
-  private
-
-  def parse
-    scanner = StringScanner.new(file)
-
-    raise 'UnknownFileType' unless scanner.skip(/WEBVTT/) == 6
-
-    loop do
-      result = parse_cue(scanner)
-      break unless result
-      cues << result
-    end
+def parse_webvtt(webvtt)
+  scanner = StringScanner.new(webvtt)
+  scanner.skip(/WEBVTT/)
+  
+  webvtt = WebVTT.new()
+  
+  loop do
+    cue = parse_cue(scanner)
+    break unless cue
+    webvtt.cues << cue
   end
+  
+  webvtt
+end
 
-  def parse_cue(scanner)
-    scanner.skip(/\s+/)
+def parse_cue(scanner)
+  start, stop = parse_timestamp(scanner)
+  text = parse_text(scanner)
 
-    if text = parse_text(scanner)
-      return text
-    elsif timestamp = parse_timestamp(scanner)
-      return WebVTT::Cue.new(timestamp[0], timestamp[1], parse_cue(scanner))
-    end
+  return false unless start && stop && text
+
+  Cue.new(start, stop, text)
+end
+
+def parse_timestamp(scanner)
+  scanner.skip(/\s+/)
+
+  timestamp = scanner.scan(/^[0-9:.]+/)
+  
+  if scanner.skip(/ --> /)
+    return [timestamp, parse_timestamp(scanner)]
+  else
+    return timestamp
   end
+end
 
-  def parse_timestamp(scanner)
-    cue = scanner.scan(/^[0-9:.]+ --> [0-9:.]+/)
-    cue.split(' --> ') if cue
-  end
+def parse_text(scanner)
+  scanner.skip(/[\s]{1}/)
 
-  def parse_text(scanner)
-    scanner.scan(/[[A-Za-z,;'\"\s]+[.?!\s]]+/)
+  text = scanner.scan(/[A-Za-z,;'\"\s]+[A-Za-z.?!]+/)
+
+  if scanner.skip(/[\s]{1}/) && scanner.peek(1) != "\n"
+    return text + ' ' + parse_text(scanner)
+  else
+    return text
   end
 end
