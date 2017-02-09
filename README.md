@@ -28,11 +28,9 @@ to college was all those girls.
 So it's a good thing I didn't go.
 EOS
 
-webvtt = WebVTT.read(speech)
-
-webvtt.cues.each do |cue|
-  puts 'Start: ' + cue.start
-  puts 'End: ' + cue.stop
-  puts 'Text ' + cue.text
+parse_webvtt(speech).cues.each do |cue|
+  puts "Start: " + cue.start
+  puts "Stop: " + cue.stop
+  puts "Text: " + cue.text.join(' ')
 end
 ```
