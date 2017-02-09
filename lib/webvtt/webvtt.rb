@@ -7,25 +7,27 @@ module WebVTT
     attr_accessor :cues
 
     def self.read(file)
+      File.new(file)
+    end
+
+    def initialize(file)
+      @cues = []
+      @file = file
+      parse
+    end
+
+    def parse
       scanner = StringScanner.new(file)
       scanner.skip(/WEBVTT/)
-
-      webvtt = File.new
 
       loop do
         cue = parse_cue(scanner)
         break unless cue
-        webvtt.cues << cue
+        cues << cue
       end
-
-      webvtt
     end
 
-    def initialize
-      @cues = []
-    end
-
-    def self.parse_cue(scanner)
+    def parse_cue(scanner)
       start, stop = parse_timestamp(scanner)
       text = parse_text(scanner)
 
@@ -34,7 +36,7 @@ module WebVTT
       WebVTT::Cue.new(start, stop, text)
     end
 
-    def self.parse_timestamp(scanner)
+    def parse_timestamp(scanner)
       scanner.skip(/\s+/)
 
       timestamp = scanner.scan(/^[0-9:.]+/)
@@ -46,7 +48,7 @@ module WebVTT
       end
     end
 
-    def self.parse_text(scanner)
+    def parse_text(scanner)
       scanner.skip(/[\s]{1}/)
 
       text = scanner.scan(/.*/)
