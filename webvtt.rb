@@ -57,10 +57,10 @@ end
 def parse_text(scanner)
   scanner.skip(/[\s]{1}/)
 
-  text = scanner.scan(/[A-Za-z,;'\"\s]+[A-Za-z.?!]+/)
+  text = scanner.scan(/.*/)
 
   if scanner.skip(/[\s]{1}/) && scanner.peek(1) != "\n"
-    return text + ' ' + parse_text(scanner)
+    return [text, parse_text(scanner)].flatten
   else
     return text
   end
