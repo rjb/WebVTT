@@ -2,6 +2,11 @@ require 'strscan'
 require_relative 'cue'
 
 module WebVTT
+  class FileError < StandardError
+  end
+end
+
+module WebVTT
   class File
     attr_reader :file
     attr_accessor :cues
@@ -12,7 +17,7 @@ module WebVTT
 
     def initialize(file)
       @cues = []
-      @file = file
+      @file = read(file)
       parse
     end
 
@@ -25,6 +30,13 @@ module WebVTT
         break unless cue
         cues << cue
       end
+    end
+
+    private
+
+    def read(file)
+      raise FileError, 'FileDoesNotExist' unless ::File.exist?(file)
+      ::File.new(file, 'r').read
     end
 
     def parse_cue(scanner)
