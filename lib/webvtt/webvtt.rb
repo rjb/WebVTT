@@ -68,7 +68,7 @@ module WebVTT
       if scanner.skip(/[\s]{1}/) && scanner.peek(1) != "\n"
         return [text, parse_text(scanner)].flatten
       else
-        return text
+        return [text]
       end
     end
   end
