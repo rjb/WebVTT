@@ -14,15 +14,14 @@ module WebVTT
     def initialize(file)
       @cues = []
       @file = read(file)
+      @scanner = StringScanner.new(@file)
       parse
     end
 
     def parse
-      scanner = StringScanner.new(file)
-      scanner.skip(/WEBVTT/)
-
-      parse_style(scanner)
-      parse_cues(scanner)
+      @scanner.skip(/WEBVTT/)
+      parse_style
+      parse_cues
     end
 
     private
@@ -32,47 +31,47 @@ module WebVTT
       ::File.new(file, 'r').read
     end
 
-    def parse_style(scanner)
-      @style = parse_text(scanner) if scanner.skip(/\s+STYLE\s+/)
+    def parse_style
+      @style = parse_text if @scanner.skip(/\s+STYLE\s+/)
     end
 
-    def parse_cues(scanner)
+    def parse_cues
       loop do
-        cue = parse_cue(scanner)
+        cue = parse_cue
         break unless cue
         cues << cue
       end
     end
 
-    def parse_cue(scanner)
-      note = parse_text(scanner) if scanner.skip(/\s+NOTE\s+/)
-      start, stop = parse_timestamp(scanner)
-      text = parse_text(scanner)
+    def parse_cue
+      note = parse_text if @scanner.skip(/\s+NOTE\s+/)
+      start, stop = parse_timestamp
+      text = parse_text
 
       return false unless start && stop && text
 
       WebVTT::Cue.new(start, stop, text, note)
     end
 
-    def parse_timestamp(scanner)
-      scanner.skip(/\s+/)
+    def parse_timestamp
+      @scanner.skip(/\s+/)
 
-      timestamp = scanner.scan(/^[0-9:.]+/)
+      timestamp = @scanner.scan(/^[0-9:.]+/)
 
-      if scanner.skip(/ --> /)
-        return [timestamp, parse_timestamp(scanner)]
+      if @scanner.skip(/ --> /)
+        return [timestamp, parse_timestamp]
       else
         return timestamp
       end
     end
 
-    def parse_text(scanner)
-      scanner.skip(/[\s]{1}/)
+    def parse_text
+      @scanner.skip(/[\s]{1}/)
 
-      text = scanner.scan(/.*/)
+      text = @scanner.scan(/.*/)
 
-      if scanner.skip(/[\s]{1}/) && scanner.peek(1) != "\n"
-        return text + ' ' + parse_text(scanner)
+      if @scanner.skip(/[\s]{1}/) && @scanner.peek(1) != "\n"
+        return text + ' ' + parse_text
       else
         return text
       end
