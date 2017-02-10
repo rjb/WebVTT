@@ -13,7 +13,6 @@ module WebVTT
 
     def initialize(file)
       @cues = []
-      @style = ''
       @file = read(file)
       parse
     end
@@ -22,8 +21,7 @@ module WebVTT
       scanner = StringScanner.new(file)
       scanner.skip(/WEBVTT/)
 
-      @style += parse_text(scanner) if scanner.skip(/\s+STYLE\s+/)
-
+      parse_style(scanner)
       parse_cues(scanner)
     end
 
@@ -32,6 +30,10 @@ module WebVTT
     def read(file)
       raise FileError, 'FileDoesNotExist' unless ::File.exist?(file)
       ::File.new(file, 'r').read
+    end
+
+    def parse_style(scanner)
+      @style = parse_text(scanner) if scanner.skip(/\s+STYLE\s+/)
     end
 
     def parse_cues(scanner)
