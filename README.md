@@ -8,6 +8,12 @@ Parse WebVTT files.
 
 # speech.vtt
 # WEBVTT
+#
+# STYLE
+# ::cue {
+#   background-image: linear-gradient(to bottom, dimgray, lightgray);
+#   color: papayawhip;
+# }
 # 
 # 00:00.000 --> 00:04.000
 # Thank you. Thank you. Thank you.
@@ -29,6 +35,8 @@ Parse WebVTT files.
 # So it's a good thing I didn't go.
 
 webvtt = webvtt = WebVTT::File.read('speech.vtt')
+
+puts webvtt.style
 
 webvtt.cues.each do |cue|
   puts "Start: " + cue.start
