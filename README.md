@@ -33,6 +33,6 @@ webvtt = webvtt = WebVTT::File.read('speech.vtt')
 webvtt.cues.each do |cue|
   puts "Start: " + cue.start
   puts "Stop: " + cue.stop
-  puts "Text: " + cue.text.join(' ')
+  puts "Text: " + cue
 end
 ```
