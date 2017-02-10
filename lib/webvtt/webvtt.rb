@@ -2,11 +2,6 @@ require 'strscan'
 require_relative 'cue'
 
 module WebVTT
-  class FileError < StandardError
-  end
-end
-
-module WebVTT
   class File
     attr_reader :file
     attr_accessor :cues
