@@ -5,7 +5,6 @@ Parse WebVTT files.
 ### Usage
 
 ```ruby
-
 # speech.vtt
 # WEBVTT
 #
