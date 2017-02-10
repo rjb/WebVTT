@@ -40,12 +40,13 @@ module WebVTT
     end
 
     def parse_cue(scanner)
+      note = parse_text(scanner) if scanner.skip(/\s+NOTE\s+/)
       start, stop = parse_timestamp(scanner)
       text = parse_text(scanner)
 
       return false unless start && stop && text
 
-      WebVTT::Cue.new(start, stop, text)
+      WebVTT::Cue.new(start, stop, text, note)
     end
 
     def parse_timestamp(scanner)
