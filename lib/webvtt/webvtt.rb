@@ -52,7 +52,7 @@ module WebVTT
       scanner.skip(/\s+/)
 
       timestamp = scanner.scan(/^[0-9:.]+/)
-      
+
       if scanner.skip(/ --> /)
         return [timestamp, parse_timestamp(scanner)]
       else
