@@ -4,6 +4,7 @@ require_relative 'cue'
 module WebVTT
   class File
     attr_reader :file
+    attr_reader :style
     attr_accessor :cues
 
     def self.read(file)
@@ -12,6 +13,7 @@ module WebVTT
 
     def initialize(file)
       @cues = []
+      @style = ''
       @file = read(file)
       parse
     end
@@ -19,6 +21,8 @@ module WebVTT
     def parse
       scanner = StringScanner.new(file)
       scanner.skip(/WEBVTT/)
+
+      @style += parse_text(scanner) if scanner.skip(/\s+STYLE\s+/)
 
       loop do
         cue = parse_cue(scanner)
