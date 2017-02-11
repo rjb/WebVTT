@@ -37,9 +37,9 @@ module WebVTT
 
     def parse_cues
       loop do
-        cue = parse_cue
-        break unless cue
-        cues << cue
+        cue_args = parse_cue
+        break unless cue_args
+        cues << WebVTT::Cue.new(cue_args)
       end
     end
 
@@ -51,7 +51,13 @@ module WebVTT
 
       return false unless start && stop && text
 
-      WebVTT::Cue.new(start, stop, text, note, identifier)
+      {
+        start: start,
+        stop: stop,
+        text: text,
+        note: note,
+        identifier: identifier
+      }
     end
 
     def note_exist?
