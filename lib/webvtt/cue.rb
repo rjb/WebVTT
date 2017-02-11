@@ -1,3 +1,5 @@
+require_relative 'timestamp'
+
 module WebVTT
   class Cue
     attr_reader :start, :stop, :text, :note, :identifier, :data
@@ -16,12 +18,17 @@ module WebVTT
     def parse
       @note = parse_note
       @identifier = parse_identifier
-      @start, @stop = parse_timestamp
+
+      if stamp = parse_timestamp
+        @start = WebVTT::Timestamp.parse(stamp[0])
+        @stop = WebVTT::Timestamp.parse(stamp[1])
+      end
+      
       @text = parse_text
     end
 
     def timestamp
-      start + ' --> ' + stop if start && stop
+      start.join(stop) if start && stop
     end
 
     private
