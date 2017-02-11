@@ -9,5 +9,9 @@ module WebVTT
       @note = note
       @identifier = identifier
     end
+
+    def timestamp
+      start + ' --> ' + stop
+    end
   end
 end
