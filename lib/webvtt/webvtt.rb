@@ -45,12 +45,19 @@ module WebVTT
 
     def parse_cue
       note = parse_text if @scanner.skip(/\s+NOTE\s+/)
+      identifier = parse_identifier unless @scanner.check(/^[0-9:.\s]+ --> [0-9:.]+/)
       start, stop = parse_timestamp
       text = parse_text
 
       return false unless start && stop && text
 
-      WebVTT::Cue.new(start, stop, text, note)
+      WebVTT::Cue.new(start, stop, text, note, identifier)
+    end
+
+    def parse_identifier
+      @scanner.skip(/[\s]{1}/)
+
+      @scanner.scan(/.*/)
     end
 
     def parse_timestamp
