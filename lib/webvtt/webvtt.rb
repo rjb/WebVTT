@@ -44,8 +44,8 @@ module WebVTT
     end
 
     def parse_cue
-      note = parse_text if @scanner.skip(/\s+NOTE\s+/)
-      identifier = parse_identifier unless @scanner.check(/^[0-9:.\s]+ --> [0-9:.]+/)
+      note = parse_note
+      identifier = parse_identifier
       start, stop = parse_timestamp
       text = parse_text
 
@@ -54,10 +54,26 @@ module WebVTT
       WebVTT::Cue.new(start, stop, text, note, identifier)
     end
 
-    def parse_identifier
-      @scanner.skip(/[\s]{1}/)
+    def note_exist?
+      @scanner.check(/\s+NOTE\s+/)
+    end
 
-      @scanner.scan(/.*/)
+    def identifier_exist?
+      !@scanner.check(/\s+[0-9:.]+ --> [0-9:.]+/)
+    end
+
+    def parse_note
+      if note_exist?
+        @scanner.skip(/\s+NOTE\s+/)
+        parse_text
+      end
+    end
+
+    def parse_identifier
+      if identifier_exist?
+        @scanner.skip(/\s+/)
+        @scanner.scan(/.*/)
+      end
     end
 
     def parse_timestamp
