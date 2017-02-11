@@ -19,7 +19,10 @@ module WebVTT
     end
 
     def parse
-      raise FileError, 'Not a valid WebVTT file.' @scanner.skip(/WEBVTT/)
+      if @scanner.skip(/WEBVTT/).nil?
+        raise FileError, 'Not a valid WebVTT file.'
+      end
+
       parse_style
       parse_cues
     end
