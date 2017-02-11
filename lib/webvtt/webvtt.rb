@@ -30,7 +30,10 @@ module WebVTT
     private
 
     def read(file)
-      raise FileError, 'File does not exist' unless ::File.exist?(file)
+      if !::File.exist?(file)
+        raise FileError, 'File does not exist'
+      end
+
       ::File.new(file, 'r').read
     end
 
