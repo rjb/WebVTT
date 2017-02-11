@@ -23,7 +23,7 @@ module WebVTT
         raise FileError, 'Not a valid WebVTT file.'
       end
 
-      parse_style
+      parse_styling
       parse_cues
     end
 
@@ -37,8 +37,20 @@ module WebVTT
       ::File.new(file, 'r').read
     end
 
+    def parse_styling
+      @style = parse_style if @scanner.skip(/\s+STYLE\s+/)
+    end
+
     def parse_style
-      @style = parse_text if @scanner.skip(/\s+STYLE\s+/)
+      @scanner.skip(/[\s]{1}/)
+
+      text = @scanner.scan(/.*/)
+
+      if @scanner.skip(/[\s]{1}/) && @scanner.peek(1) != "\n"
+        return text + ' ' + parse_text
+      else
+        return text
+      end
     end
 
     def parse_cues
