@@ -1,16 +1,16 @@
 module WebVTT
   class Cue
-    attr_reader :start, :stop, :text, :note, :identifier, :content
+    attr_reader :start, :stop, :text, :note, :identifier, :data
 
-    def self.parse(content)
-      cue = Cue.new(content)
+    def self.parse(data)
+      cue = Cue.new(data)
       cue.parse
       cue
     end
 
-    def initialize(content)
-      @content = content
-      @scanner = StringScanner.new(content)
+    def initialize(data)
+      @data = data
+      @scanner = StringScanner.new(data)
     end
 
     def parse
