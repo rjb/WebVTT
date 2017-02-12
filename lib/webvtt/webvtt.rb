@@ -34,7 +34,7 @@ module WebVTT
         raise FileError, 'File does not exist'
       end
 
-      ::File.new(file, 'r').read
+      ::File.read(file)
     end
 
     def parse_styling
