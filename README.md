@@ -35,11 +35,19 @@ Parse WebVTT files.
 
 webvtt = webvtt = WebVTT::File.read('speech.vtt')
 
-puts webvtt.style
-
+# Cues
 webvtt.cues.each do |cue|
-  puts "Start: " + cue.start
-  puts "Stop: " + cue.stop
-  puts "Text: " + cue
+  puts "Start: #{cue.start}"
+  puts "Stop: #{cue.stop}"
+  puts "Text: #{cue.text}"
 end
+
+# Comments / Notes
+
+webvtt.comments.each do |comment|
+  puts comment
+end
+
+# Styling
+puts webvtt.style
 ```
