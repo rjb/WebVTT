@@ -1,11 +1,13 @@
 require 'strscan'
 require_relative 'cue'
+require_relative 'comment'
 
 module WebVTT
   class File
+    attr_reader :cues
     attr_reader :file
     attr_reader :style
-    attr_accessor :cues
+    attr_reader :comments
 
     def self.read(file)
       File.new(file)
@@ -13,6 +15,7 @@ module WebVTT
 
     def initialize(file)
       @cues = []
+      @comments = []
       @file = read(file)
       @scanner = StringScanner.new(@file)
       parse
@@ -24,7 +27,7 @@ module WebVTT
       end
 
       parse_styling
-      parse_cues
+      parse_rest
     end
 
     private
@@ -53,10 +56,15 @@ module WebVTT
       end
     end
 
-    def parse_cues
-      @scanner.rest.split("\n\n").each do |data|
-        cue = Cue.parse(data)
-        cues << cue
+    def parse_rest
+      @scanner.skip(/\s+/)
+
+      @scanner.rest.split("\n\n").each do |content|
+        if content.match(/NOTE/)
+          self.comments << Comment.parse(content)
+        else
+          self.cues << Cue.parse(content)
+        end
       end
     end
   end
