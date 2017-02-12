@@ -54,8 +54,8 @@ module WebVTT
     end
 
     def parse_cues
-      @scanner.rest.split("\n\n").each do |chunk|
-        cue = Cue.parse(chunk)
+      @scanner.rest.split("\n\n").each do |data|
+        cue = Cue.parse(data)
         cues << cue
       end
     end
