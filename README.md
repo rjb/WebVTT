@@ -2,6 +2,8 @@
 
 Parse WebVTT files.
 
+It is important to note that while notes will be parsed, they are not then associated to a cue; They are simply parsed as instances of the WebVTT::Comment class. See Usage below to see an example.
+
 ### Usage
 
 ```ruby
