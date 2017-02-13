@@ -40,7 +40,7 @@ module WebVTT
     def parse_identifier
       @scanner.skip(/\s+/)
 
-      if !@scanner.check(/[0-9:.]+ --> [0-9:.]+/) && !@scanner.check(/NOTE/)
+      if @scanner.check(/[0-9:.]+ --> [0-9:.]+/).nil?
         @scanner.scan(/.*/)
       end
     end
