@@ -23,10 +23,6 @@ module WebVTT
       hours + ':' + minutes + ':' + seconds + '.' + milliseconds
     end
 
-    def join(other)
-      to_s + ' --> ' + other.to_s
-    end
-
     private
 
     def parse_timestamp
