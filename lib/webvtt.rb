@@ -1,5 +1,5 @@
 require_relative 'webvtt/cue'
-require_relative 'webvtt/webvtt'
+require_relative 'webvtt/file'
 
 module WebVTT
   class FileError < StandardError
