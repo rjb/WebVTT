@@ -1,5 +1,6 @@
 require 'strscan'
 require_relative 'cue'
+require_relative 'region'
 require_relative 'comment'
 
 module WebVTT
@@ -7,6 +8,7 @@ module WebVTT
     attr_reader :cues
     attr_reader :file
     attr_reader :style
+    attr_reader :region
     attr_reader :comments
 
     def self.read(file)
@@ -61,9 +63,11 @@ module WebVTT
 
       @scanner.rest.split("\n\n").each do |content|
         if content.match(/NOTE/)
-          self.comments << Comment.parse(content)
+          @comments << Comment.parse(content)
+        elsif content.match(/REGION/)
+          @region = Region.parse(content)
         else
-          self.cues << Cue.parse(content)
+          @cues << Cue.parse(content)
         end
       end
     end
