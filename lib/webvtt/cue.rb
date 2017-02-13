@@ -31,7 +31,7 @@ module WebVTT
       @text = parse_text
     end
 
-    def timestamp
+    def timing
       start.to_s + ' --> ' + stop.to_s
     end
 
