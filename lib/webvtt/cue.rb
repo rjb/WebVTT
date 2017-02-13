@@ -32,7 +32,7 @@ module WebVTT
     end
 
     def timestamp
-      start.join(stop) if start && stop
+      start.to_s + ' --> ' + stop.to_s
     end
 
     private
