@@ -10,6 +10,14 @@ It is important to note that while notes will be parsed, they are not then assoc
 # speech.vtt
 # WEBVTT
 #
+# REGION
+# id:1
+# width:40%
+# lines:3
+# regionanchor:0%,100%
+# viewportanchor:10%,90%
+# scroll:up
+#
 # STYLE
 # ::cue {
 #   background-image: linear-gradient(to bottom, dimgray, lightgray);
@@ -44,8 +52,15 @@ webvtt.cues.each do |cue|
   puts "Text: #{cue.text}"
 end
 
-# Comments / Notes
+# Region
+puts "Id: #{webvtt.region.id}"
+puts "Width: #{webvtt.region.width}"
+puts "Lines: #{webvtt.region.lines}"
+puts "Region anchor point: #{webvtt.region.region_anchor}"
+puts "Region viewport anchor point: #{webvtt.region.viewport_anchor}"
+puts "Scroll: #{webvtt.region.scroll}"
 
+# Comments / Notes
 webvtt.comments.each do |comment|
   puts comment
 end
