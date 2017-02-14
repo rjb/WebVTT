@@ -1,4 +1,5 @@
 require_relative 'timestamp'
+require_relative 'setting'
 
 module WebVTT
   class Cue
@@ -6,6 +7,7 @@ module WebVTT
     attr_reader :stop
     attr_reader :text
     attr_reader :data
+    attr_reader :settings
     attr_reader :identifier
 
     def self.parse(data)
@@ -28,6 +30,7 @@ module WebVTT
         end
       end
 
+      @settings = parse_settings
       @text = parse_text
     end
 
@@ -55,6 +58,15 @@ module WebVTT
       else
         return timestamp
       end
+    end
+
+    def parse_settings
+      settings = nil
+      if @scanner.check(/\n/).nil?
+        @scanner.skip(/\s+/)
+        settings = Setting.parse(@scanner.scan(/.*/).split.join("\n"))
+      end
+      settings
     end
 
     def parse_text
