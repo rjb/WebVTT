@@ -7,6 +7,7 @@ module WebVTT
     attr_reader :data
     attr_reader :line
     attr_reader :size
+    attr_reader :align
     attr_reader :position
     attr_reader :vertical
 
@@ -24,7 +25,7 @@ module WebVTT
     end
 
     def vertical=(value)
-      raise 'Invalid vertical value.' if invalid_vertical?(value)
+      raise 'Invalid vertical value.' if invalid_vertical?(value) && !value.nil?
       @vertical = value
     end
 
@@ -33,22 +34,26 @@ module WebVTT
     end
 
     def position=(value)
-      raise 'Invalid position value.' if invalid_percentage?(value)
+      raise 'Invalid position value.' if invalid_percentage?(value) && !value.nil?
       @position = value
     end
 
     def size=(value)
-      raise 'Invalid size value.' if invalid_percentage?(value)
+      raise 'Invalid size value.' if invalid_percentage?(value) && !value.nil?
       @size = value
     end
 
     def align=(value)
-      raise 'Invalid align value' if invalid_align?(value)
+      raise 'Invalid align value' if invalid_align?(value) && !value.nil?
       @align = value
     end
 
     def to_h
       YAML.load(@data.gsub(/:[\s]{0,}/, ': '))
+    end
+
+    def to_s
+      @data.gsub("\n", "\s")
     end
 
     private
