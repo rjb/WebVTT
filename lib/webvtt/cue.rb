@@ -75,7 +75,7 @@ module WebVTT
       text = @scanner.scan(/.*/)
 
       if @scanner.skip(/[\s]{1}/) && @scanner.peek(1) != "\n"
-        return text + ' ' + parse_text
+        return (text + ' ' + parse_text).strip
       else
         return text
       end
