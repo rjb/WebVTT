@@ -25,7 +25,8 @@ module WebVTT
     end
 
     def to_h
-      YAML.load(@data.gsub(/REGION[\s]{0,}/, '').gsub(/:[\s]{0,}/, ': '))
+      content = @data.gsub(/REGION[\s]{0,}/, '').gsub(/:[\s]{0,}/, ': ')
+      YAML.load(content) || {}
     end
   end
 end
