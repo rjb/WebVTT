@@ -49,7 +49,7 @@ module WebVTT
     end
 
     def to_h
-      YAML.load(@data.gsub(/:[\s]{0,}/, ': '))
+      YAML.load(to_valid_yaml(@data))
     end
 
     def to_s
@@ -57,6 +57,10 @@ module WebVTT
     end
 
     private
+
+    def to_valid_yaml(content)
+      content.split.join("\n").gsub(/:[\s]{0,}/, ': ')
+    end
 
     def invalid_vertical?(value)
       !VALID_VERTICAL_VALUES.include?(value)
