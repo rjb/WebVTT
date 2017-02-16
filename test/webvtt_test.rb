@@ -11,26 +11,6 @@ class WebVTTTest < Minitest::Test
     refute_nil ::WebVTT::VERSION
   end
 
-  def test_cue_identifier
-    assert_equal '1', @cue.identifier
-  end
-
-  def test_cue_start_timestamp
-    assert_equal '00:00:00.000', @cue.start.to_s
-  end
-
-  def test_cue_stop_timestamp
-    assert_equal '00:00:04.000', @cue.stop.to_s
-  end
-  
-  def test_cue_timing
-    assert_equal '00:00:00.000 --> 00:00:04.000', @cue.timing
-  end
-
-  def test_cue_text
-    assert_equal 'Thank you. Thank you. Thank you. This is fantastic.', @cue.text
-  end
-
   def test_instance_of_cue_setting
     assert_instance_of WebVTT::Setting, @setting
   end
