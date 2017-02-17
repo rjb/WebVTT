@@ -3,7 +3,6 @@ WEBVTT
 STYLE
 ::cue(v[voice="Esme"]) { color: cyan }
 ::cue(v[voice="Mary"]) { color: lime }
-::cue(i) { font-style: italic }
 
 REGION
 id:1
@@ -18,7 +17,7 @@ Ray Bradbury's Commencement Speech
 to the Caltech Class of 2000.
 
 1
-00:00.000 --> 00:04.000 line:63% position:72% align:start
+00:00.000 --> 00:04.000 line:63% position:72% align:start size:23% vertical:lr
 Thank you. Thank you. Thank you.
 This is fantastic.
 
