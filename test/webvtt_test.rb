@@ -9,6 +9,17 @@ class WebVTTTest < Minitest::Test
     refute_nil ::WebVTT::VERSION
   end
 
+  def test_raises_file_error
+    assert_raises(WebVTT::FileError) { WebVTT::File.read('nothing.vtt') }
+  end
+
+  def test_style
+    style = 
+      '::cue(v[voice="Esme"]) { color: cyan } ' \
+      '::cue(v[voice="Mary"]) { color: lime }'
+    assert_equal style, @webvtt.style
+  end
+
   def test_cues_count
     assert_equal 2, @webvtt.cues.count
   end
@@ -31,13 +42,5 @@ class WebVTTTest < Minitest::Test
 
   def test_instance_of_region
     assert_instance_of WebVTT::Region, @webvtt.region
-  end
-
-  def test_style
-    style = 
-      '::cue(v[voice="Esme"]) { color: cyan } ' \
-      '::cue(v[voice="Mary"]) { color: lime } ' \
-      '::cue(i) { font-style: italic }'
-    assert_equal style, @webvtt.style
   end
 end
