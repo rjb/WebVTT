@@ -10,7 +10,7 @@ class CommentTest < Minitest::Test
     assert_equal 'This is a single line note! Hooray ;)', @comment.text
   end
 
-  def test_single_line_not_to_s
+  def test_single_line_note_to_s
     assert_equal 'This is a single line note! Hooray ;)', @comment.text.to_s
   end
 end
