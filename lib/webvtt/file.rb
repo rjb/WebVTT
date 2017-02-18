@@ -47,7 +47,7 @@ module WebVTT
     end
 
     def parse_style
-      @scanner.skip(/[\s]{1}/)
+      @scanner.skip(/\s+/)
 
       text = @scanner.scan(/.*/)
 
