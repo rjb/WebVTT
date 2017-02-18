@@ -2,7 +2,9 @@ WEBVTT
 
 STYLE
 ::cue(v[voice="Esme"]) { color: cyan }
-::cue(v[voice="Mary"]) { color: lime }
+::cue(v[voice="Mary"]) {
+  color: lime
+}
 
 REGION
 id:1
