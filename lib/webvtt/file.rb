@@ -61,7 +61,7 @@ module WebVTT
     def parse_rest
       @scanner.skip(/\s+/)
 
-      @scanner.rest.split("\n\n").each do |content|
+      @scanner.rest.split(/\n{2}/).each do |content|
         if content.match(/NOTE/)
           @comments << Comment.parse(content)
         elsif content.match(/REGION/)
