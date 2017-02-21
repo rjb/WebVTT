@@ -13,7 +13,11 @@ class WebVTTTest < Minitest::Test
     refute_nil ::WebVTT::VERSION
   end
 
-  def test_raises_file_error
+  def test_file_is_not_valid_webvtt_file
+    assert_raises(WebVTT::FileError) { WebVTT::File.read('invalid.vtt') }
+  end
+
+  def test_file_does_not_exist
     assert_raises(WebVTT::FileError) { WebVTT::File.read('nothing.vtt') }
   end
 
