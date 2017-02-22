@@ -15,7 +15,7 @@ class RegionTest < Minitest::Test
   end
 
   def test_id
-    assert_equal '1', @region.id
+    assert_equal 1, @region.id
   end
 
   def test_width
@@ -23,7 +23,7 @@ class RegionTest < Minitest::Test
   end
 
   def test_lines
-    assert_equal '3', @region.lines
+    assert_equal 3, @region.lines
   end
 
   def test_region_anchor
