@@ -47,47 +47,53 @@ module WebVTT
           raise 'Invalid region setting.'
         end
 
-        settings[key] = val
+        integer = Integer(val) rescue nil
+
+        settings[key] = integer || val
       end
     end
 
     def validate
       validate_id
-      validate_width unless @width.empty?
-      validate_lines unless @lines.empty?
-      validate_scroll unless @scroll.empty?
-      validate_region_anchor unless @region_anchor.empty?
-      validate_viewport_anchor unless @viewport_anchor.empty?
+      validate_width
+      validate_lines
+      validate_scroll
+      validate_region_anchor
+      validate_viewport_anchor
     end
 
     def validate_id
-      raise ArgumentError, 'Id must not contain the substring \'-->\'.' if @id.match(/-->/)
+      raise ArgumentError, 'Id must not contain the substring \'-->\'.' if "#{@id}".match(/-->/)
     end
 
     def validate_width
-      raise ArgumentError, 'Width must be a valid percentage.' unless valid_percentage?(@width)
+      if !valid_percentage?(@width) && !@width.empty?
+        raise ArgumentError, 'Width must be a valid percentage.'
+      end
     end
 
     def validate_lines
-      raise ArgumentError, 'Lines must be one or more digits.' unless @lines.match(/^[0-9]+$/)
+      if !@lines.to_s.empty? && !@lines.to_s.match(/^[0-9]+$/)
+        raise ArgumentError, 'Lines must be one or more digits.'
+      end
     end
 
     def validate_scroll
-      unless VALID_SCROLL_VALUES.include?(@scroll.downcase)
+      if !@scroll.empty? && !VALID_SCROLL_VALUES.include?(@scroll.downcase)
         raise ArgumentError, 'Scroll must be an empty string, \'None\', or \'Up\'.'
       end
     end
 
     def validate_region_anchor
       coordinates = @region_anchor.split(',')
-      unless coordinates.all? { |item| valid_percentage?(item) }
+      if !@region_anchor.empty? && !coordinates.all? { |item| valid_percentage?(item) }
         raise ArgumentError, 'Region anchor must be two valid percentges.'
       end
     end
 
     def validate_viewport_anchor
       coordinates = @viewport_anchor.split(',')
-      unless coordinates.all? { |item| valid_percentage?(item) }
+      if !@viewport_anchor.empty? && !coordinates.all? { |item| valid_percentage?(item) }
         raise ArgumentError, 'Viewport anchor must be two valid percentges.'
       end
     end
