@@ -11,11 +11,11 @@ class RegionTest < Minitest::Test
       viewportanchor:10%,90%
       scroll:up
     EOR
-    @region = WebVTT::Region.new(region_sample)
+    @region = WebVTT::Region.parse(region_sample)
   end
 
   def test_id
-    assert_equal 1, @region.id
+    assert_equal '1', @region.id
   end
 
   def test_width
@@ -23,7 +23,7 @@ class RegionTest < Minitest::Test
   end
 
   def test_lines
-    assert_equal 3, @region.lines
+    assert_equal '3', @region.lines
   end
 
   def test_region_anchor
@@ -67,5 +67,23 @@ class RegionTwoTest < Minitest::Test
 
   def test_scroll
     assert_nil @region.scroll
+  end
+end
+
+class RegionThreeTest < Minitest::Test
+  def setup
+    @sample = <<~EOR
+      REGION id:1
+      id:1
+      width:40%
+      lines:3
+      regionanchor:0%,100%
+      viewportanchor:10%,90%
+      scroll:up
+    EOR
+  end
+
+  def test_input_is_not_valid_region
+    assert_raises('Invalid definition block.') { WebVTT::Region.parse(@sample) }
   end
 end
