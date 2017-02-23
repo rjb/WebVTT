@@ -1,8 +1,10 @@
 module WebVTT
   class Setting
-    PERCENTAGE_VALUES = ('0'..'100')
-    VALID_VERTICAL_VALUES = %w(rl lr)
-    VALID_ALIGN_VALUES = %w(start middle end)
+    VALID_VERTICAL_VALUES = %w(rl lr).freeze
+    VALID_ALIGN_VALUES = %w(start center end left right).freeze
+    VALID_PERCENTAGE = /((^100%$)|(^\d{1,2}%$))|(^\d{1,2}\.\d+%$)/
+    VALID_POSITION = /((^100%$)|(^\d{1,2}%$))|((^100%)|(^\d{1,2}%)\,(line-left|center|line-right)$)/
+    VALID_LINE = /(^\-\d+$)|((^100%$)|(^\d{1,2}%$))|((^\-{0,1}\d+)|((^100%)|(^\d{1,2}%))\,(start|center|end)$)/
 
     attr_reader :data
     attr_reader :line
@@ -12,67 +14,83 @@ module WebVTT
     attr_reader :vertical
 
     def self.parse(data)
-      Setting.new(data)
+      setting = Setting.new(data)
+      setting.parse
+      setting
     end
 
     def initialize(data)
       @data = data
-      self.vertical = to_h['vertical']
-      self.line = to_h['line']
-      self.position = to_h['position']
-      self.size = to_h['size']
-      self.align = to_h['align']
     end
+ 
+    def parse
+      settings = parse_data
 
-    def vertical=(value)
-      raise 'Invalid vertical value.' if invalid_vertical?(value) && !value.nil?
-      @vertical = value
-    end
+      @line = settings['line'] || ''
+      @size = settings['size'] || ''
+      @align = settings['align'] || ''
+      @position = settings['position'] || ''
+      @vertical = settings['vertical'] || ''
 
-    def line=(value)
-      @line = value
-    end
-
-    def position=(value)
-      raise 'Invalid position value.' if invalid_percentage?(value) && !value.nil?
-      @position = value
-    end
-
-    def size=(value)
-      raise 'Invalid size value.' if invalid_percentage?(value) && !value.nil?
-      @size = value
-    end
-
-    def align=(value)
-      raise 'Invalid align value' if invalid_align?(value) && !value.nil?
-      @align = value
-    end
-
-    def to_h
-      YAML.load(to_valid_yaml(@data))
+      validate
     end
 
     def to_s
-      @data.gsub("\n", "\s")
+      @data
     end
 
     private
 
-    def to_valid_yaml(content)
-      content.split.join("\n").gsub(/:[\s]{0,}/, ': ')
+    def parse_data
+      @data.split.each_with_object({}) do |item, settings|
+        key, val = item.split(':')
+
+        if key.empty? || val.nil?
+          raise 'Invalid setting.'
+        end
+
+        integer = Integer(val) rescue nil
+
+        settings[key] = integer || val
+      end
     end
 
-    def invalid_vertical?(value)
-      !VALID_VERTICAL_VALUES.include?(value)
+    def validate
+      validate_line
+      validate_size
+      validate_align
+      validate_position
+      validate_vertical
     end
 
-    def invalid_align?(value)
-      !VALID_ALIGN_VALUES.include?(value)
+    def validate_line
+      if !@line.empty? && !@line.match(VALID_LINE)
+        raise ArgumentError, 'Invalid line.'
+      end
     end
 
-    def invalid_percentage?(value)
-      value.to_s[-1] != '%' ||
-        !PERCENTAGE_VALUES.include?(value.to_s.gsub('%', ''))
+    def validate_size
+      if !@size.empty? && !@size.match(VALID_PERCENTAGE)
+        raise ArgumentError, 'Size must be percentage between 0 and 100.'
+      end
+    end
+
+    def validate_align
+      if !@align.empty? && !VALID_ALIGN_VALUES.include?(@align)
+        raise ArgumentError, "Alignment must be #{VALID_ALIGN_VALUES.join(', ')}"
+      end
+    end
+
+    def validate_position
+      if !@position.empty? && !@position.match(VALID_POSITION)
+        raise ArgumentError, 'Invalid position.'
+      end
+    end
+
+    def validate_vertical
+      if !@vertical.empty? && !VALID_VERTICAL_VALUES.include?(@vertical)
+        raise ArgumentError, "Region must be #{VALID_VERTICAL_VALUES.join(' or ')}"
+      end
     end
   end
 end
