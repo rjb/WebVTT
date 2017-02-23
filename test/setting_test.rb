@@ -3,7 +3,7 @@ require 'test_helper'
 class Minitest::Test
   def setup
     setting_sample = 'line:63% position:72% align:start size:23% vertical:rl'
-    @setting = WebVTT::Setting.new(setting_sample)
+    @setting = WebVTT::Setting.parse(setting_sample)
   end
 
   def test_valid_line
