@@ -64,33 +64,43 @@ module WebVTT
     end
 
     def validate_line
-      if !@line.empty? && !@line.match(VALID_LINE)
-        raise ArgumentError, 'Invalid line.'
-      end
+      raise ArgumentError, 'Invalid line.' unless line_valid?
     end
 
     def validate_size
-      if !@size.empty? && !@size.match(VALID_PERCENTAGE)
-        raise ArgumentError, 'Size must be percentage between 0 and 100.'
-      end
+      raise ArgumentError, 'Size must be percentage between 0 and 100.' unless size_valid?
     end
 
     def validate_align
-      if !@align.empty? && !VALID_ALIGN_VALUES.include?(@align)
-        raise ArgumentError, "Alignment must be #{VALID_ALIGN_VALUES.join(', ')}"
-      end
+      raise ArgumentError, "Align must be #{VALID_ALIGN_VALUES.join(', ')}" unless align_valid?
     end
 
     def validate_position
-      if !@position.empty? && !@position.match(VALID_POSITION)
-        raise ArgumentError, 'Invalid position.'
-      end
+      raise ArgumentError, 'Invalid position.' unless position_valid?
     end
 
     def validate_vertical
-      if !@vertical.empty? && !VALID_VERTICAL_VALUES.include?(@vertical)
-        raise ArgumentError, "Region must be #{VALID_VERTICAL_VALUES.join(' or ')}"
-      end
+      raise ArgumentError, "Region must be #{VALID_VERTICAL_VALUES.join(' or ')}" unless vertical_valid?
+    end
+
+    def line_valid?
+      @line.empty? || @line.match(VALID_LINE)
+    end
+
+    def size_valid?
+      @size.empty? || @size.match(VALID_PERCENTAGE)
+    end
+
+    def align_valid?
+      @align.empty? || VALID_ALIGN_VALUES.include?(@align)
+    end
+
+    def position_valid?
+      @position.empty? || @position.match(VALID_POSITION)
+    end
+
+    def vertical_valid?
+      @vertical.empty? || VALID_VERTICAL_VALUES.include?(@vertical)
     end
   end
 end
