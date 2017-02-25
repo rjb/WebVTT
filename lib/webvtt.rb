@@ -5,4 +5,7 @@ require 'webvtt/file'
 module WebVTT
   class FileError < StandardError
   end
+
+  class TypeError < StandardError
+  end
 end
