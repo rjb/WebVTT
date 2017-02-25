@@ -22,7 +22,7 @@ module WebVTT
 
     def parse
       if data.match(/REGION\s{0,}[\r\n]{1}/).nil?
-        raise 'Invalid definition block.'
+        raise TypeError, 'Not a valid region.'
       end
 
       settings = parse_settings
