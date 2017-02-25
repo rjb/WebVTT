@@ -26,7 +26,7 @@ module WebVTT
     private
 
     def parse_timestamp
-      stamp = @data.match(/([0-9]{0,2}):{0,1}([0-9]{2}):([0-9]{2}).([0-9]{3})/)
+      stamp = @data.match(/(\d{0,2}):{0,1}(\d{2}):(\d{2}).(\d{3})/)
 
       if stamp.nil?
         raise 'Invalid timestamp.'
