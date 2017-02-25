@@ -64,7 +64,7 @@ module WebVTT
       settings = nil
       if @scanner.check(/\n/).nil?
         @scanner.skip(/\s+/)
-        settings = Setting.parse(@scanner.scan(/.*/).split.join("\n"))
+        settings = Setting.parse(@scanner.scan(/.*/))
       end
       settings
     end
