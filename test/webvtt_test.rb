@@ -74,9 +74,21 @@ class WebVTTTest < Minitest::Test
     assert_equal style, webvtt.style
   end
 
+  def test_invalid_region
+    assert_raises(WebVTT::FileError) do
+      WebVTT::File.read('test/nofile.vtt')
+    end
+  end
+
   def test_invalid_webvtt_file
     assert_raises(WebVTT::FileError) do
       WebVTT::File.read('test/vtt/invalid.vtt')
+    end
+  end
+
+  def test_invalid_region
+    assert_raises(WebVTT::TypeError) do
+      WebVTT::File.read('test/vtt/invalid_region.vtt')
     end
   end
 end
