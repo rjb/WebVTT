@@ -14,7 +14,7 @@ module WebVTT
     end
 
     def parse
-      raise ArgumentError, 'Invalid note' unless data.match(/^NOTE/)
+      raise TypeError, 'Invalid note' unless data.match(/^NOTE/)
 
       @text = data.gsub(/NOTE[\s]{0,}/, '').gsub("\n", ' ').strip
     end
