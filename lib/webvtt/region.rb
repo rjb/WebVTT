@@ -63,7 +63,9 @@ module WebVTT
     end
 
     def validate_id
-      raise ArgumentError, 'Id must not contain the substring \'-->\'.' if "#{@id}".match(/-->/)
+      if "#{@id}".match(/-->/)
+        raise ArgumentError, 'Id must not contain the substring \'-->\'.'
+      end
     end
 
     def validate_width
