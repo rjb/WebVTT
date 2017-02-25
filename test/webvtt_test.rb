@@ -86,7 +86,7 @@ class WebVTTTest < Minitest::Test
     assert_equal 'lr', @setting.vertical
   end
 
-  def test_cue_settings_to_s
+  def test_cue_setting_to_s
     setting = 
       'line:63% ' \
       'position:72% ' \
