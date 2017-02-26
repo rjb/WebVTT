@@ -37,6 +37,40 @@ class RegionTest < Minitest::Test
   def test_scroll
     assert_equal 'up', @region.scroll
   end
+
+  def test_invalid_identifier
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nid:1-->2") }
+  end
+
+  def test_invalid_width
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nwidth:22") }
+  end
+
+  def test_invalid_lines
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nlines:abc") }
+  end
+
+  def test_invalid_scroll
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nscroll:DOWN") }
+  end
+
+  def test_invalid_region_anchor
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nregionanchor:12,12") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nregionanchor:12%,12") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nregionanchor:12,12%") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nregionanchor:120%,120%") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nregionanchor:12%,120%") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nregionanchor:120%,12%") }
+  end
+
+  def test_invalid_viewport_anchor
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nviewportanchor:63,20") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nviewportanchor:12%,12") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nviewportanchor:12,12%") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nviewportanchor:120%,120%") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nviewportanchor:120%,12%") }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nviewportanchor:12%,120%") }
+  end
 end
 
 class RegionTwoTest < Minitest::Test
