@@ -69,7 +69,7 @@ module WebVTT
     end
 
     def validate_width
-      if !valid_percentage?(@width) && !@width.empty?
+      if !@width.to_s.empty? && !valid_percentage?(@width)
         raise ArgumentError, 'Width must be a valid percentage.'
       end
     end
