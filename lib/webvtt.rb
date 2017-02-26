@@ -8,4 +8,7 @@ module WebVTT
 
   class TypeError < StandardError
   end
+
+  class ArgumentError < StandardError
+  end
 end
