@@ -14,7 +14,7 @@ class RegionTest < Minitest::Test
     @region = WebVTT::Region.parse(region_sample)
   end
 
-  def test_id
+  def test_identifier
     assert_equal 1, @region.id
   end
 
