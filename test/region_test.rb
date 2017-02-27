@@ -23,8 +23,8 @@ class RegionTest < Minitest::Test
       viewportanchor:10%,90%
       scroll:up
     EOR
-
     assert_raises(WebVTT::TypeError) { WebVTT::Region.parse(sample) }
+    assert_raises(WebVTT::ArgumentError) { WebVTT::Region.parse("REGION\nid:1\n:30%") }
   end
 
   def test_valid_identifier
@@ -33,7 +33,7 @@ class RegionTest < Minitest::Test
 
   def test_empty_identifier
     assert_empty WebVTT::Region.parse("REGION\n").id
-    # assert_empty WebVTT::Region.parse("REGION\nid:").id
+    assert_empty WebVTT::Region.parse("REGION\nid:").id
   end
 
   def test_invalid_identifier
@@ -46,7 +46,7 @@ class RegionTest < Minitest::Test
 
   def test_empty_width
     assert_empty WebVTT::Region.parse("REGION\n").width
-    # assert_empty WebVTT::Region.parse("REGION\nwidth:").width
+    assert_empty WebVTT::Region.parse("REGION\nwidth:").width
   end
 
   def test_invalid_width
@@ -59,7 +59,7 @@ class RegionTest < Minitest::Test
 
   def test_empty_lines
     assert_empty WebVTT::Region.parse("REGION\n").lines
-    # assert_empty WebVTT::Region.parse("REGION\nlines:").lines
+    assert_empty WebVTT::Region.parse("REGION\nlines:").lines
   end
 
   def test_invalid_lines
@@ -72,7 +72,7 @@ class RegionTest < Minitest::Test
 
   def test_empty_region_anchor
     assert_empty WebVTT::Region.parse("REGION\n").region_anchor
-    # assert_empty WebVTT::Region.parse("REGION\nregionanchor:").region_anchor
+    assert_empty WebVTT::Region.parse("REGION\nregionanchor:").region_anchor
   end
 
   def test_invalid_region_anchor
@@ -90,7 +90,7 @@ class RegionTest < Minitest::Test
 
   def test_empty_viewport_anchor
     assert_empty WebVTT::Region.parse("REGION\n").viewport_anchor
-    # assert_empty WebVTT::Region.parse("REGION\nviewportanchor:").viewport_anchor
+    assert_empty WebVTT::Region.parse("REGION\nviewportanchor:").viewport_anchor
   end
 
   def test_invalid_viewport_anchor
@@ -108,7 +108,7 @@ class RegionTest < Minitest::Test
 
   def test_empty_scroll
     assert_empty WebVTT::Region.parse("REGION\n").scroll
-    # assert_empty WebVTT::Region.parse("REGION\nscroll:").scroll
+    assert_empty WebVTT::Region.parse("REGION\nscroll:").scroll
   end
 
   def test_invalid_scroll
