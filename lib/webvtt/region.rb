@@ -43,9 +43,7 @@ module WebVTT
       data.gsub(/REGION\s+/, '').split.each_with_object({}) do |item, settings|
         key, val = item.split(':')
 
-        if key.empty? || val.nil?
-          raise 'Invalid region setting.'
-        end
+        raise ArgumentError, 'Invalid region setting.' if key.empty?
 
         integer = Integer(val) rescue nil
 
