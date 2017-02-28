@@ -1,35 +1,28 @@
 require 'test_helper'
 
 class CommentTest < Minitest::Test
-  def setup
-    comment_sample = "NOTE This is a single line note! Hooray ;)"
-    @comment = WebVTT::Comment.parse(comment_sample)
+  def test_single_line_comment
+    note = "NOTE This is a single line note! Hooray ;)"
+    comment = WebVTT::Comment.parse(note)
+
+    assert_equal 'This is a single line note! Hooray ;)', comment.text
+    assert_equal 'This is a single line note! Hooray ;)', comment.to_s
   end
 
-  def test_single_line_note
-    assert_equal 'This is a single line note! Hooray ;)', @comment.text
-  end
-
-  def test_single_line_note_to_s
-    assert_equal 'This is a single line note! Hooray ;)', @comment.to_s
-  end
-end
-
-class CommentTwoTest < Minitest::Test
-  def setup
-    comment_sample = <<~EON
+  def test_multiline_comment
+    note = <<~EON
       NOTE
       This is a multiline
       note! Hooray ;)
     EON
-    @comment = WebVTT::Comment.parse(comment_sample)
+    comment = WebVTT::Comment.parse(note)
+
+    assert_equal 'This is a multiline note! Hooray ;)', comment.text
+    assert_equal 'This is a multiline note! Hooray ;)', comment.to_s
   end
 
-  def test_single_line_note
-    assert_equal 'This is a multiline note! Hooray ;)', @comment.text
-  end
-
-  def test_single_line_not_to_s
-    assert_equal 'This is a multiline note! Hooray ;)', @comment.to_s
+  def test_invalid_comment
+    note = "This is not a valid note."
+    assert_raises(WebVTT::TypeError) { WebVTT::Comment.parse(note) }
   end
 end
