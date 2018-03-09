@@ -41,7 +41,7 @@ Parse WebVTT files.
 # 00:17.000 --> 00:19.000
 # So it's a good thing I didn't go.
 
-webvtt = webvtt = WebVTT::File.read('speech.vtt')
+webvtt = WebVTT::File.read('speech.vtt')
 
 # Cues
 webvtt.cues.each do |cue|
